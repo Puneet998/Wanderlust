@@ -1,0 +1,169 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  .icon-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 0 1rem 10px 1rem;
+    gap: 1.5rem;
+  }
+
+  .icon-box {
+    flex: 0 0 auto;
+    text-align: center;
+    opacity: 0.7;
+  }
+
+  .icon-box:hover {
+    opacity: 1;
+    border-bottom: 1px solid black;
+    cursor: pointer;
+  }
+
+  .icon-box i {
+    font-size: 24px;
+  }
+
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    padding: 8px 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.2s;
+  }
+
+  .carousel-btn:hover {
+    background-color: #f7f7f7;
+  }
+
+  .carousel-btn.left {
+    left: 0;
+  }
+
+  .carousel-btn.right {
+    right: 0;
+  }
+
+  .icon-wrapper {
+    position: relative;
+    padding: 0 2rem;
+  }
+
+  .tax-info {
+    display: none;
+  }
+
+  .tax-toggle {
+    border: 1px solid black;
+    border-radius: 1rem;
+    height: 3rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 20rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (min-width: 768px) {
+    .tax-toggle {
+      margin-left: 4rem;
+      justify-content: flex-start;
+    }
+  }
+</style>
+
+<div class="container mt-4">
+  <div class="row flex-md-row align-items-center">
+    <!-- Icons & Scroll Buttons -->
+    <div class="col-md-8 icon-wrapper mb-3 mb-md-0">
+      <button class="carousel-btn left" onclick="scrollIcons(-1)">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+
+      <div class="icon-container" id="iconScroll">
+        <!-- Static 24 icons -->
+        <div class="icon-box"><i class="fa-solid fa-fire"></i><p>Trending</p></div>
+        <div class="icon-box"><i class="fa-solid fa-bed"></i><p>Rooms</p></div>
+        <div class="icon-box"><i class="fa-solid fa-mountain-city"></i><p>Iconic Cities</p></div>
+        <div class="icon-box"><i class="fa-solid fa-mountain"></i><p>Mountains</p></div>
+        <div class="icon-box"><i class="fa-brands fa-fort-awesome"></i><p>Castles</p></div>
+        <div class="icon-box"><i class="fa-solid fa-person-swimming"></i><p>Amazing Pools</p></div>
+        <div class="icon-box"><i class="fa-solid fa-campground"></i><p>Camping</p></div>
+        <div class="icon-box"><i class="fa-solid fa-cow"></i><p>Farms</p></div>
+        <div class="icon-box"><i class="fa-regular fa-snowflake"></i><p>Arctic</p></div>
+        <div class="icon-box"><i class="fa-solid fa-igloo"></i><p>Domes</p></div>
+        <div class="icon-box"><i class="fa-solid fa-ship"></i><p>Boats</p></div>
+        <div class="icon-box"><i class="fa-brands fa-fort-awesome"></i><p>Bus</p></div>
+        <div class="icon-box"><i class="fa-solid fa-person-swimming"></i><p>Coffee</p></div>
+        <div class="icon-box"><i class="fa-solid fa-campground"></i><p>Swim</p></div>
+        <div class="icon-box"><i class="fa-solid fa-cow"></i><p>Tree</p></div>
+        <div class="icon-box"><i class="fa-regular fa-snowflake"></i><p>Gym</p></div>
+        <div class="icon-box"><i class="fa-solid fa-igloo"></i><p>Food</p></div>
+        <div class="icon-box"><i class="fa-solid fa-ship"></i><p>Mountain</p></div>
+        
+      </div>
+
+      <button class="carousel-btn right" onclick="scrollIcons(1)">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- GST Toggle -->
+    <div class="col-md-4">
+      <div class="tax-toggle mt-2 mt-md-0">
+        <div class="form-check-reverse form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault">Default total after taxes</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Listings Section - NO CHANGE -->
+  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+    <% for (let listing of allListing) { %>
+      <a href="/listings/<%= listing._id %>" class="listing-link">
+        <div class="card col listing-card">
+          <img src="<%= listing.image.url %>" class="card-img-top image-fluid" alt="listing_image" style="height: 20rem;">
+          <div class="card-img-overlay"></div>
+          <div class="card-body">
+            <p class="card-text">
+              <b><%= listing.title %></b><br>
+              ₹ <%= listing.price.toLocaleString("en-IN") %>/Night
+              <i class="tax-info">&nbsp;&nbsp;+18% GST</i>
+            </p>
+          </div>
+        </div>
+      </a>
+    <% } %>
+  </div>
+</div>
+
+<script>
+  function scrollIcons(direction) {
+    const container = document.getElementById("iconScroll");
+    const scrollAmount = 200;
+    container.scrollBy({
+      left: direction * scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+
+  let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+  taxSwitch.addEventListener("click", () => {
+    let taxInfo = document.getElementsByClassName("tax-info");
+    for (let info of taxInfo) {
+      info.style.display = (info.style.display !== "inline") ? "inline" : "none";
+    }
+  });
+</script>
