@@ -137,7 +137,9 @@ app.use("/listings", listingRouter);//for isting
 app.use("/listings/:id/reviews", reviewRouter);//for review
 app.use("/",userRouter);//for user authentication and authorization
 
-
+app.get("/",(req,res)=>{
+  res.redirect("/listings")
+})
 
 //agar user koi bhi route ka naam likhe cahhe vo exite na kare to ham eak error page show karenge
 
