@@ -1,5 +1,3 @@
-**[Live Demo](https://gallery-amaan8429.vercel.app)**
-
 # Wanderlust
 
 **Wanderlust** is a full-stack web application that helps users explore, list, and manage travel destinations and campgrounds. It provides a clean and responsive interface, secure authentication, and full CRUD functionality.
