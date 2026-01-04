@@ -141,6 +141,13 @@ app.get("/",(req,res)=>{
   res.redirect("/listings")
 })
 
+app.get("/privacy",(req,res)=>{
+  res.render("listings/privacy.ejs");
+})
+
+app.get("/terms",(req,res)=>{
+  res.render("listings/terms.ejs");
+})
 //agar user koi bhi route ka naam likhe cahhe vo exite na kare to ham eak error page show karenge
 
 app.all("*", (req, res, next) => {
